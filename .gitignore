@@ -19,3 +19,4 @@ hs_err_pid*
 # ide files
 .idea
 first-sample/first-sample.iml
+first-sample/producer/producer.iml

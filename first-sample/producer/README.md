@@ -1,0 +1,1 @@
+starters: https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using.build-systems.starters
