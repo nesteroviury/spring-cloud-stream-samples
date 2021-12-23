@@ -11,6 +11,7 @@
 
     <modules>
         <module>first-sample</module>
+        <module>dto</module>
     </modules>
 
     <properties>
