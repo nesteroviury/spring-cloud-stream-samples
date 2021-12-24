@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.spring.cloud.example.dto.Payload;
 
 @RequiredArgsConstructor
-@RequestMapping("api")
+@RequestMapping("/api")
 @RestController
 public class ApplicationController {
     private final StreamBridge streamBridge;
