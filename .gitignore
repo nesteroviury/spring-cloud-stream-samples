@@ -1,6 +1,7 @@
 # Compiled class file
 *.class
-dto/target
+dto/
+first-sample/producer/target/
 
 # Log file
 *.log
