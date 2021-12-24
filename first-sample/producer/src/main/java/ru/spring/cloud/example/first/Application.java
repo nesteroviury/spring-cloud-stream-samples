@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import ru.spring.cloud.example.dto.Payload;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,7 +22,7 @@ public class Application {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void delegateToSupplier(String data) {
-        streamBridge.send("source-out-0", data);
+    public void delegateToSupplier(Payload payload) {
+        streamBridge.send("source-out-0", payload);
     }
 }

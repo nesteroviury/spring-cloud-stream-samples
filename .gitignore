@@ -1,5 +1,6 @@
 # Compiled class file
 *.class
+dto/target
 
 # Log file
 *.log
