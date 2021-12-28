@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        source-out-0:
+          destination: partitioned.destination
+          producer:
+            partition-key-expression: headers['partitionKey']
+            partition-count: 2

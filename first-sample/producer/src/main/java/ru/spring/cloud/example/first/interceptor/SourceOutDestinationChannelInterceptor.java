@@ -11,17 +11,31 @@ import java.util.Optional;
 
 public class SourceOutDestinationChannelInterceptor implements ChannelInterceptor {
     private static final String CREATION_TIME_HEADER_KEY = "Creation-Time";
+    private static final String PARTITION_KEY_HEADER_KEY = "partitionKey";
+    private static final int DEFAULT_PARTITION_VALUE = 0;
     private static final String INTERCEPTOR_PAYLOAD = "/" + SourceOutDestinationChannelInterceptor.class.getSimpleName() + "/";
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
-        MessageHeaderAccessor mutableAccessor = MessageHeaderAccessor.getMutableAccessor(message);
-        mutableAccessor.setHeader(CREATION_TIME_HEADER_KEY, System.currentTimeMillis());
-        Optional<Payload> payload = Optional.ofNullable((Payload) message.getPayload());
-        payload.ifPresent(data -> {
-            String path = data.getPath();
-            data.setPath(path + INTERCEPTOR_PAYLOAD);
-        });
+        MessageHeaderAccessor mutableAccessor = buildHeaders(message);
+        Payload payload = buildPayload(message.getPayload());
         return MessageBuilder.withPayload(payload).setHeaders(mutableAccessor).build();
+    }
+
+    private MessageHeaderAccessor buildHeaders(Message<?> message) {
+        MessageHeaderAccessor mutableAccessor = MessageHeaderAccessor.getMutableAccessor(message);
+        Optional<Payload> payload = (Optional<Payload>) message.getPayload();
+        mutableAccessor.setHeader(CREATION_TIME_HEADER_KEY, System.currentTimeMillis());
+        mutableAccessor.setHeader(PARTITION_KEY_HEADER_KEY, payload.map(Payload::getPartition).orElse(DEFAULT_PARTITION_VALUE));
+        return mutableAccessor;
+    }
+
+    private Payload buildPayload(Object data) {
+        Optional<Payload> payload = Optional.ofNullable((Payload) data);
+        payload.ifPresent(p -> {
+            String path = p.getPath();
+            p.setPath(path + INTERCEPTOR_PAYLOAD);
+        });
+        return null;
     }
 }
