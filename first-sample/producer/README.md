@@ -8,3 +8,5 @@ channel interceptors
 partitioning
     https://docs.spring.io/spring-cloud-stream-binder-kafka/docs/3.2.1/reference/html/spring-cloud-stream-binder-kafka.html#_partitioning_with_the_kafka_binder
 
+https://hub.docker.com/r/wurstmeister/kafka
+https://www.baeldung.com/ops/kafka-list-topics

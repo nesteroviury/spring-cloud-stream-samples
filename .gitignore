@@ -2,6 +2,7 @@
 *.class
 dto/
 first-sample/producer/target/
+first-sample/consumer/target/
 
 # Log file
 *.log
