@@ -5,14 +5,17 @@ import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.HttpStatus;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import ru.spring.cloud.example.dto.Payload;
 
 @RequiredArgsConstructor
 @RequestMapping("/api")
 @RestController
 public class ApplicationController {
-    private static final int DEFAULT_PARTITION_VALUE = 0;
     private static final String PARTITION_KEY_HEADER_KEY = "partitionKey";
 
     private final StreamBridge streamBridge;
@@ -20,10 +23,9 @@ public class ApplicationController {
     @PostMapping("/send")
     @ResponseStatus(HttpStatus.OK)
     public void delegateToSupplier(@RequestBody Payload payload) {
-        int partitionIndex = payload.getPartition() >= 0 ? payload.getPartition() : DEFAULT_PARTITION_VALUE;
         Message<Payload> message = MessageBuilder
                 .withPayload(payload)
-                .setHeader(PARTITION_KEY_HEADER_KEY, partitionIndex)
+                .setHeader(PARTITION_KEY_HEADER_KEY, payload.getPartition())
                 .build();
         streamBridge.send("source-out-0", message);
     }
