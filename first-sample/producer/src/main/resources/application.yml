@@ -4,20 +4,13 @@ server:
 spring:
   cloud:
     stream:
-      function:
-        definition: receive
       bindings:
         source-out-0:
-          destination: sensor-2
+          destination: data-topic
+          producer:
+            partition-key-expression: headers['partitionKey']
+            partition-count: 2
         receive-in-0:
-          destination: sensor-2
-
-#spring:
-#cloud:
-#stream:
-#bindings:
-#source-out-0:
-#destination: partitioned.destination
-#producer:
-#partition-key-expression: headers['partitionKey']
-#partition-count: 2
+          destination: data-topic
+      function:
+        definition: receive

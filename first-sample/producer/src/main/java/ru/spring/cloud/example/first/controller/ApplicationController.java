@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.HttpStatus;
 import org.springframework.integration.support.MessageBuilder;
-import org.springframework.messaging.Message;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,17 +15,16 @@ import ru.spring.cloud.example.dto.Payload;
 @RequestMapping("/api")
 @RestController
 public class ApplicationController {
-    private static final String PARTITION_KEY_HEADER_KEY = "partitionKey";
+    private static final String PARTITION_HEADER_KEY = "partitionKey";
 
     private final StreamBridge streamBridge;
 
     @PostMapping("/send")
     @ResponseStatus(HttpStatus.OK)
     public void delegateToSupplier(@RequestBody Payload payload) {
-        Message<Payload> message = MessageBuilder
+        streamBridge.send("source-out-0", MessageBuilder
                 .withPayload(payload)
-                .setHeader(PARTITION_KEY_HEADER_KEY, payload.getPartition())
-                .build();
-        streamBridge.send("source-out-0", message);
+                .setHeader(PARTITION_HEADER_KEY, payload.getPartition())
+                .build());
     }
 }

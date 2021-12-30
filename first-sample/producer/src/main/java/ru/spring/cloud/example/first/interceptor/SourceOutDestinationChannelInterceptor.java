@@ -12,14 +12,12 @@ import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.stereotype.Service;
 import ru.spring.cloud.example.dto.Payload;
 
-import java.nio.charset.StandardCharsets;
-
 @GlobalChannelInterceptor(patterns = "source-out-*")
 @RequiredArgsConstructor
 @Service
 public class SourceOutDestinationChannelInterceptor implements ChannelInterceptor {
-    private static final String UPDATE_TIME_HEADER_KEY = "Update-Time";
     private static final String INTERCEPTOR_PAYLOAD = "/" + SourceOutDestinationChannelInterceptor.class.getSimpleName() + "/";
+    private static final String UPDATE_TIME_HEADER_KEY = "Update-Time";
 
     private final ObjectMapper objectMapper;
 
